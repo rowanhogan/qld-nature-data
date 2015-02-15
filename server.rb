@@ -22,6 +22,5 @@ get '/images/:query' do
   doc = Nokogiri::XML(open(url))
   image_url = doc.css('Image')[0].attributes['source'].value
 
-  { url: image_url }.to_json
+  { url: image_url.gsub(/\/[0-9]+px-/, "/300px-") }.to_json
 end
-
