@@ -244,8 +244,9 @@ li:hover > label {
 }
 
 .slick-initialized .slick-slide {
-  background-size: cover;
   background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .slick-next, .slick-prev {

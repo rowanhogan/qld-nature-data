@@ -67,9 +67,9 @@ var loadClasses = function(kingdomData, $kingdomList) {
     _.each(response.Class, function (classData) {
       var $classList = $('<li data-class="' + classData.ClassName + '" class="class"><label>' + classData.ClassName + (classData.ClassCommonName != undefined ? (' <small>' + classData.ClassCommonName + '</small>') : null) + '</label></li>');
 
-      // $.getJSON('/images/' + classData.ClassName, function(imageData) {
-      //   $classList.append('<img src="' + imageData.url + '">')
-      // });
+      $.getJSON('/images/' + classData.ClassName, function(imageData) {
+        $classList.append('<img src="' + imageData.url + '">')
+      });
 
       $classList.on("click", function(e) {
         e.stopPropagation();
@@ -102,9 +102,9 @@ var loadFamilies = function(classData, $classList) {
     _.each(response.Family, function (familyData) {
       var $familyList = $('<li data-family="' + familyData.FamilyName + '" class="family"><label>' + familyData.FamilyName + (familyData.FamilyCommonName != undefined ? (' <small>' + familyData.FamilyCommonName + '</small>') : null) + '</label></li>');
 
-      // $.getJSON('/images/' + familyData.FamilyName, function(imageData) {
-      //   $familyList.append('<img src="' + imageData.url + '">')
-      // });
+      $.getJSON('/images/' + familyData.FamilyName, function(imageData) {
+        $familyList.append('<img src="' + imageData.url + '">')
+      });
 
       $familyList.on("click", function(e) {
         e.stopPropagation();
@@ -177,7 +177,17 @@ var loadSpeciesProfile = function(profileUrl) {
 
         L.tileLayer('http://{s}.tile.stamen.com/{style}/{z}/{x}/{y}.png', { style: 'toner' }).addTo(map);
 
-        var geoJsonLayer = L.geoJson(geoJson);
+        var geoJsonLayer = L.geoJson(geoJson, {
+          onEachFeature: function(feature, leafletFeature) {
+            if (_.any(feature.properties)) {
+              html = "";
+              _.each(feature.properties, function(value, key) {
+                return html += "<dt>" + key + "</dt><dd>" + value + "</dd>";
+              });
+              leafletFeature.bindPopup("<dl>" + html + "</dl>");
+            }
+          }
+        });
 
         map.addLayer(geoJsonLayer);
         map.fitBounds( geoJsonLayer.getBounds() );
