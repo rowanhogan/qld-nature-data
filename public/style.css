@@ -157,6 +157,26 @@ li:hover > label {
   background: whitesmoke;
 }
 
+.conservation-status {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: .5em;
+  background: #ddd;
+  width: 2em;
+  line-height: 2em;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 90%;
+  font-family: monospace;
+  text-transform: uppercase;
+  color: black;
+}
+
+.conservation-status.warning-true {
+  color: white;
+  background: orangered;
+}
+
 
 .profile {
   position: fixed;
@@ -221,10 +241,17 @@ li:hover > label {
   width: 100%;
   height: 50%;
   margin: 0;
-  background: #eee;
 }
 
-#map { background: #ccc; }
+@media screen and (min-width: 1100px) {
+  #map, .gallery.slick-slider {
+    float: left;
+    width: 50%;
+    height: 100%;
+  }
+}
+
+#map { background: #000; }
 
 .gallery.slick-slider:before {
   content: 'No Images';
@@ -263,7 +290,7 @@ li:hover > label {
 .slick-next { right: 32px; }
 
 .slick-slide {
-  background: #eee;
+  background: #666;
   text-align: center;
 }
 

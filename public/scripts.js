@@ -135,7 +135,7 @@ var loadSpecies = function(familyData, $familyList) {
     var $speciesGroupList = $('<ul></ul>');
 
     _.each(response.Species, function (speciesData) {
-      var $speciesList = $('<li class="species"><label>' + speciesData.ScientificName + (speciesData.AcceptedCommonName != undefined ? (' <small>' + speciesData.AcceptedCommonName + '</small>') : null) + '</label></li>');
+      var $speciesList = $('<li class="species"><label>' + speciesData.ScientificName + (speciesData.AcceptedCommonName != undefined ? (' <small>' + speciesData.AcceptedCommonName + '</small>') : null) + '<strong class="conservation-status warning-' + speciesData.ConservationStatus.ConservationSignificant + '">' + (speciesData.ConservationStatus.BOTStatusCode != undefined ? (speciesData.ConservationStatus.BOTStatusCode + speciesData.ConservationStatus.NCAStatusCode) : '') + '</strong></label></li>');
 
       $speciesList.on("click", function(e) {
         e.stopPropagation();
@@ -152,7 +152,7 @@ var loadSpeciesProfile = function(profileUrl) {
   $.getJSON( formatUrl(profileUrl), function(response) {
     var $profile = $('<div class="profile"><button class="close-profile">Close</button></div>')
 
-    $profile.append("<h2>" + response.Species.ScientificName + " <small>" + response.Species.AcceptedCommonName + "</small>" + "</h2>");
+    $profile.append("<h2>" + response.Species.ScientificName + " <small>" + response.Species.AcceptedCommonName + "</small><strong class='conservation-status warning-" + response.Species.ConservationStatus.ConservationSignificant + "'>" + (response.Species.ConservationStatus.BOTStatusCode != undefined ? (response.Species.ConservationStatus.BOTStatusCode + response.Species.ConservationStatus.NCAStatusCode) : '') + "</strong></h2>");
 
     var $gallery = $("<div class='gallery'></div>")
 
