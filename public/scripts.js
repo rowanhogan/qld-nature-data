@@ -135,7 +135,7 @@ var loadSpecies = function(familyData, $familyList) {
     var $speciesGroupList = $('<ul></ul>');
 
     _.each(response.Species, function (speciesData) {
-      var $speciesList = $('<li class="species"><label>' + speciesData.ScientificName + (speciesData.AcceptedCommonName != undefined ? (' <small>' + speciesData.AcceptedCommonName + '</small>') : null) + '<strong class="conservation-status warning-' + speciesData.ConservationStatus.ConservationSignificant + '">' + (speciesData.ConservationStatus.BOTStatusCode != undefined ? (speciesData.ConservationStatus.BOTStatusCode + speciesData.ConservationStatus.NCAStatusCode) : '') + '</strong></label></li>');
+      var $speciesList = $('<li class="species"><label>' + speciesData.ScientificName + (speciesData.AcceptedCommonName != undefined ? (' <small>' + speciesData.AcceptedCommonName + '</small>') : null) + '<strong class="conservation-status warning-' + speciesData.ConservationStatus.ConservationSignificant + '">' + (speciesData.ConservationStatus.BOTStatusCode != undefined ? (speciesData.ConservationStatus.BOTStatusCode + speciesData.ConservationStatus.NCAStatusCode != undefined ? speciesData.ConservationStatus.NCAStatusCode : '') : '') + '</strong></label></li>');
 
       $speciesList.on("click", function(e) {
         e.stopPropagation();
