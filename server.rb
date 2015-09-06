@@ -16,8 +16,8 @@ get '/api/:query' do
 end
 
 get '/images/:query' do
-  # url = "http://en.wikipedia.org/w/api.php?action=query&list=allimages&aiprop=url&format=json&ailimit=1$aisort=timestamp&aifrom=#{params[:query]}"
-  url = "http://en.wikipedia.org/w/api.php?action=opensearch&limit=5&format=xml&namespace=0&search=#{params[:query]}"
+  # url = "https://en.wikipedia.org/w/api.php?action=query&list=allimages&aiprop=url&format=json&ailimit=1$aisort=timestamp&aifrom=#{params[:query]}"
+  url = "https://en.wikipedia.org/w/api.php?action=opensearch&limit=5&format=xml&namespace=0&search=#{params[:query]}"
 
   doc = Nokogiri::XML(open(url))
   image_url = doc.css('Image')[0].attributes['source'].value

@@ -209,6 +209,10 @@ li:hover > label {
   box-sizing: border-box;
 }
 
+.profile .gallery {
+  background-position: center;
+}
+
 .close-profile {
   position: absolute;
   text-indent: -9999px;
@@ -321,4 +325,25 @@ li:hover > label {
 .slick-slide img {
   margin: auto;
   max-height: 300px;
+}
+
+.leaflet-popup-content dl {
+  overflow: hidden;
+}
+
+.leaflet-popup-content dt,
+.leaflet-popup-content dd {
+  float: left;
+  padding: 0;
+  margin: 0 0 .5em;
+}
+
+.leaflet-popup-content dt {
+  clear: both;
+  font-weight: bold;
+  margin-right: .5em;
+}
+
+.leaflet-popup-content dt:after {
+  content: ':';
 }

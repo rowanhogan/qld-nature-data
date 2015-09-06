@@ -28,14 +28,17 @@ var loadKingdoms = function($app) {
     var $kingdomsList = $('<ul></ul>');
 
     _.each(response.Kingdom, function (kingdomData) {
-      var $kingdomList = $('<li data-kingdom="' + kingdomData.KingdomName + '" class="kingdom"><h3>' + kingdomData.KingdomName + (kingdomData.KingdomCommonName != undefined ? (' <small>' + kingdomData.KingdomCommonName + '</small>') : null) + '</h3></li>');
+      var $kingdomList = $('<li data-kingdom="' + kingdomData.KingdomName + '" class="kingdom"><h3>' + kingdomData.KingdomName + (kingdomData.KingdomCommonName != undefined ? (' <small>' + kingdomData.KingdomCommonName + '</small>') : '') + '</h3></li>');
 
-      $.getJSON('/images/' + kingdomData.KingdomName, function(imageData) {
-        $kingdomList.css({
-          'background-image' : 'url(' + imageData.url + ')'
+      if (kingdomData.KingdomName == 'Protista') {
+        $kingdomList.css('background-image', 'url(https://upload.wikimedia.org/wikipedia/commons/2/24/Protist_collage.jpg)');
+      } else {
+        $.getJSON('/images/' + kingdomData.KingdomName, function(imageData) {
+          $kingdomList.css({
+            'background-image' : 'url(' + imageData.url + ')'
+          });
         });
-
-      });
+      }
 
       $kingdomList.on("click", function(e) {
         e.stopPropagation();
@@ -65,10 +68,12 @@ var loadClasses = function(kingdomData, $kingdomList) {
     var $classesList = $('<ul class="tree"></ul>');
 
     _.each(response.Class, function (classData) {
-      var $classList = $('<li data-class="' + classData.ClassName + '" class="class"><label>' + classData.ClassName + (classData.ClassCommonName != undefined ? (' <small>' + classData.ClassCommonName + '</small>') : null) + '</label></li>');
+      var $classList = $('<li data-class="' + classData.ClassName + '" class="class"><label>' + classData.ClassName + (classData.ClassCommonName != undefined ? (' <small>' + classData.ClassCommonName + '</small>') : '') + '</label></li>');
 
-      $.getJSON('/images/' + classData.ClassName, function(imageData) {
-        $classList.append('<img src="' + imageData.url + '">')
+      $.getJSON('/images/' + classData.ClassName).done(function(imageData) {
+        $classList.append('<img src="' + imageData.url + '">');
+      }).fail(function(jqxhr, textStatus, error) {
+        $classList.append('<img src="https://placeholdit.imgix.net/~text?txtsize=160&bg=aaaaaa&txtclr=333333&txt=?&w=256&h=256">');
       });
 
       $classList.on("click", function(e) {
@@ -100,10 +105,12 @@ var loadFamilies = function(classData, $classList) {
     var $familiesList = $('<ul></ul>');
 
     _.each(response.Family, function (familyData) {
-      var $familyList = $('<li data-family="' + familyData.FamilyName + '" class="family"><label>' + familyData.FamilyName + (familyData.FamilyCommonName != undefined ? (' <small>' + familyData.FamilyCommonName + '</small>') : null) + '</label></li>');
+      var $familyList = $('<li data-family="' + familyData.FamilyName + '" class="family"><label>' + familyData.FamilyName + (familyData.FamilyCommonName != undefined ? (' <small>' + familyData.FamilyCommonName + '</small>') : '') + '</label></li>');
 
-      $.getJSON('/images/' + familyData.FamilyName, function(imageData) {
-        $familyList.append('<img src="' + imageData.url + '">')
+      $.getJSON('/images/' + familyData.FamilyName).done(function(imageData) {
+        $familyList.append('<img src="' + imageData.url + '">');
+      }).fail(function(jqxhr, textStatus, error) {
+        $familyList.append('<img src="https://placeholdit.imgix.net/~text?txtsize=160&bg=aaaaaa&txtclr=333333&txt=?&w=256&h=256">');
       });
 
       $familyList.on("click", function(e) {
@@ -135,7 +142,7 @@ var loadSpecies = function(familyData, $familyList) {
     var $speciesGroupList = $('<ul></ul>');
 
     _.each(response.Species, function (speciesData) {
-      var $speciesList = $('<li class="species"><label>' + speciesData.ScientificName + (speciesData.AcceptedCommonName != undefined ? (' <small>' + speciesData.AcceptedCommonName + '</small>') : null) + '<strong class="conservation-status warning-' + speciesData.ConservationStatus.ConservationSignificant + '">' + (speciesData.ConservationStatus.BOTStatusCode != undefined ? (speciesData.ConservationStatus.BOTStatusCode + speciesData.ConservationStatus.NCAStatusCode != undefined ? speciesData.ConservationStatus.NCAStatusCode : '') : '') + '</strong></label></li>');
+      var $speciesList = $('<li class="species"><label>' + speciesData.ScientificName + (speciesData.AcceptedCommonName != undefined ? (' <small>' + speciesData.AcceptedCommonName + '</small>') : '') + '<strong class="conservation-status warning-' + speciesData.ConservationStatus.ConservationSignificant + '">' + (speciesData.ConservationStatus.BOTStatusCode != undefined ? (speciesData.ConservationStatus.BOTStatusCode + speciesData.ConservationStatus.NCAStatusCode != undefined ? speciesData.ConservationStatus.NCAStatusCode : '') : '') + '</strong></label></li>');
 
       $speciesList.on("click", function(e) {
         e.stopPropagation();
@@ -197,6 +204,10 @@ var loadSpeciesProfile = function(profileUrl) {
     $('#app').append($profile);
 
     $profile.find('.gallery').slick();
+
+    $.getJSON('/images/' + response.Species.ScientificName).done(function(imageData) {
+      $profile.find('.gallery').css('background-image', 'url(' + imageData.url + ')');
+    });
   });
 };
 
